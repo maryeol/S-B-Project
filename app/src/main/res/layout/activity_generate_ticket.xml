@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GenerateTicket">
+
+    <TextView
+        android:id="@+id/idEdt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:inputType="text"
+        />
+
+    <TextView
+        android:id="@+id/panEdt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:inputType="text"
+        android:layout_below="@+id/idEdt"
+        />
+
+    <TextView
+        android:id="@+id/laneEdt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:inputType="text"
+        android:layout_below="@+id/panEdt"
+
+        />
+
+    <TextView
+        android:id="@+id/dateEdt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:inputType="text"
+        android:layout_below="@+id/laneEdt"
+
+        />
+
+    <ImageView
+        android:id="@+id/idIVQrcode"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/dateEdt"
+       />
+    <Button
+        android:id="@+id/idBtnSaveeQR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/idIVQrcode"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
+        android:text="@string/save_qr_code" />
+
+</RelativeLayout>

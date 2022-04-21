@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="generate_ticket">Click To Generate Ticket</string>
+    <string name="save_qr_code">Save Your Ticket</string>
+</resources>
