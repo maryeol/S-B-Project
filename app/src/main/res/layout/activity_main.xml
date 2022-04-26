@@ -19,6 +19,7 @@
         android:layout_height="wrap_content"
         android:text="@string/generate_ticket"
         android:layout_gravity="center"
+        android:enabled="false"
         />
 
 </LinearLayout>

@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.le.AdvertiseSettings;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -76,22 +77,34 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
 
         btnTicket = findViewById(R.id.CreateTicket);
         btnTicket.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-                int i = 0;
+                try{
+                    int i = 0;
 
-                System.out.println(decode(getID(mBeacons.get(i).getUrl())));
-                System.out.println(s.substring(7,11));
+                    System.out.println(decode(getID(mBeacons.get(i).getUrl())));
+                    System.out.println(s.substring(7,11));
 
-                String x = String.valueOf(decode(getID(mBeacons.get(i).getUrl())));
-                String y =s.substring(7,11);
-                while (!x.equals(y)){
-                    i= i + 1;
+                    String x = String.valueOf(decode(getID(mBeacons.get(i).getUrl())));
+                    String y =s.substring(7,11);
+                    while (!x.equals(y)){
+                        i= i + 1;
+                    }
+                    String URL = mBeacons.get(i).getUrl();
+                    Intent intent = new Intent (MainActivity.this , GenerateTicket.class);
+                    intent.putExtra("url", URL);
+                    startActivity(intent);
                 }
-                String URL = mBeacons.get(i).getUrl();
-                Intent intent = new Intent (MainActivity.this , GenerateTicket.class);
-                intent.putExtra("url", URL);
-                startActivity(intent);
+                catch(Exception e){
+                    Context context = getApplicationContext();
+                    CharSequence text = "Cannot Generate Ticket!";
+                    int duration = Toast.LENGTH_LONG;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+
+                }
             }
         });
 
@@ -108,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         String generatedString = "http://";
         int generatedint = (int)(Math.random() * (max - min)) + min;
         generatedString = generatedString + Integer.toString(generatedint) ;
+        Log.d(TAG , generatedString);
         return generatedString;
     }
 
@@ -142,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        beaconManager.unbind(this);
         for (int i = 0; i < beaconList.size(); i++)
             beaconList.get(i).stopAdvertising();
     }
@@ -270,6 +285,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
                                 String decoded_id = String.valueOf(decode(getID(url)));
 
                                 if (original_id.equals(decoded_id)){
+                                    btnTicket.setEnabled(true);
                                     System.out.println("url : " + url);
                                     System.out.println(" ID : " + getID(url) +
                                             " decoded ID : " + decode(getID(url))+
@@ -301,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
 
                                 String decoded_id = String.valueOf(decode(getID(url)));
                                 if (original_id.equals(decoded_id)){
+                                    btnTicket.setEnabled(true);
                                     System.out.println("url : " + url);
                                     System.out.println(" ID : " + getID(url) +
                                             " decoded ID : " + decode(getID(url))+
