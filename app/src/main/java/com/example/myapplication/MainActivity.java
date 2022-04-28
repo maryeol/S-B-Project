@@ -46,10 +46,10 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
 
     private static final String TAG = "Main Activity";
 
-    //private final BluetoothDevice bluetoothDevice;
     private BluetoothAdapter mBluetoothAdapter;
     private BeaconManager beaconManager;
 
+    // for enabling GPS
     private Context context;
     private LocationManager locationManager ;
 
@@ -196,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
                 if (!mBluetoothAdapter.isEnabled()) {
                     Toast.makeText(MainActivity.this, "Turning bluetooth...", Toast.LENGTH_SHORT).show();
                     mBluetoothAdapter.enable();
+                    Toast.makeText(MainActivity.this, "Bluetooth On", Toast.LENGTH_SHORT).show();
                 }
                 checkLocationPermission();
             }
@@ -205,9 +206,14 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
     private void CheckGpsStatus() {
         locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
         assert locationManager != null;
-        locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-        startActivity(intent1);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Log.d(TAG, "GPS is enabeled already!");
+        }
+        else{
+            Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent1);
+        }
+
     }
 
     private void checkLocationPermission() {
