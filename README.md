@@ -20,7 +20,9 @@
 <h3 align="center">S&B Project</h3>
 
   <p align="center">
-    This project has been carries out wihtin S&B company which was fonded on .... in Germany.
+    This project has been carries out wihtin Scheidt & Bachmann company which was fonded on 1872 in Germany.
+    Scheidt & Bachmann Maghreb based in Tunisia is a special team part of the Scheidt & Bachmann division of Parking Solutions.
+    
     <br />
     <a href="https://github.com/github_username/repo_name">View Demo</a>
     ·
