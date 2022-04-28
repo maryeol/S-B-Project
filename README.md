@@ -126,12 +126,14 @@ Additional screenshots soon.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+- [ ] Emitting Eddystone URL Beacon
+    - [ ] Emit a unique ID
+- [ ] Scanning BLE Devices 
+- [ ] Scanning Beacons
+    - [ ] Filtering Eddystone URL Beacon
+    - [ ] Decoding URL
+- [ ] Ticket Generation
+    - [ ] Saving QR CODE 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
