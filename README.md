@@ -85,31 +85,29 @@ Key Words: `BLE`, `Beacon`, `EddystoneURL`, `Java Application`, `ESP32`, `Smart 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple example steps.
+To get a local copy up and running follow these steps.
 
 ### Prerequisites
 
-Software you need to install before getting started :
-* Android Studio
+Things you need to install before getting started :
+*Java JDK on Ubuntu 20.04
+```sh
+  $ sudo apt install openjdk-11-jdk
+  ``` 
+  
+* Android Studio (Ubuntu)
   ```sh
-  npm install npm@latest -g
+  $ sudo add-apt-repository ppa:maarten-fonville/android-studio
+  $ sudo apt install android-studio
   ```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/maryeol/S-B-Project.git
    ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
