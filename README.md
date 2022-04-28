@@ -15,12 +15,13 @@
 <h3 align="center">S&B Project</h3>
 
   <p align="center">
-    project_description
-    <br />
-    <a href="https://github.com/github_username/repo_name"><strong>Explore the docs »</strong></a>
-    <br />
+   This project has been carried out within Scheidt & Bachmann company, which is an international company founded on 1872 in Germany.
+   Scheidt & Bachmann Maghreb based in Tunisia is a special team part of the Scheidt & Bachmann division of Parking Solutions.
+   It provides and follows the full range of Parking Management Systems for the Middle East, African and Mediterranean Countries.
+   
     <br />
     <a href="https://github.com/github_username/repo_name">View Demo</a>
+   
   </p>
 </div>
 
@@ -31,7 +32,22 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#about-the-project">
+The number of vehicles is increasing significantly and the number of parking spaces in public places and huge buildings for instance: airports, malls, stadiums, etc … are limited. These factors are causing traffic congestion which becomes an alarming and growing problem. Needless to say, the parking problem has been a major factor since one million barrels of oil were burned every day according to © Happiest Minds Technologies. 
+
+Many people in cities around the world, consider the parking experience often as a frustrating activity and causes a lot of traffic jams as well as time-wasting.
+
+All things considered, without having a well-studied plan, these issues will be more complex.
+       
+The main objective of the project is to develop a fully automated parking solution that benefits both the driver and service providers:
+For the customer, the goal is to enhance the parking experience, reduce time spent at the entry gate ensuring a fast and comfortable process.
+As for companies, it will decrease management costs, increase the performance of their services and their brand image and lastly decrease air pollution.
+    
+The driver will be able to pass without stopping in front of the unit to get the entry ticket. The solution will not be using Wi-Fi or cellular data. However, it will be implemented using Bluetooth Low Energy to spot the existence and the location of the driver and decide which barrier gate to open.
+The driver has only to download a mobile application to access the parking.
+       
+
+     </a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -59,10 +75,9 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
 
 
 ### Built With
