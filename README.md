@@ -101,6 +101,7 @@ Things you need to install before getting started :
   $ sudo add-apt-repository ppa:maarten-fonville/android-studio
   $ sudo apt install android-studio
   ```
+You also need a running ESP32 emitting data
 
 ### Installation
 
