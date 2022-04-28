@@ -15,9 +15,7 @@
 <h3 align="center">S&B Project</h3>
 
   <p align="center">
-   This project has been carried out within Scheidt & Bachmann company, which is an international company founded on 1872 in Germany.
-   Scheidt & Bachmann Maghreb based in Tunisia is a special team part of the Scheidt & Bachmann division of Parking Solutions.
-   It provides and follows the full range of Parking Management Systems for the Middle East, African and Mediterranean Countries.
+   abou the project
    
     <br />
     <a href="https://github.com/github_username/repo_name">View Demo</a>
@@ -33,6 +31,11 @@
   <ol>
     <li>
       <a href="#about-the-project">
+       
+       This project has been carried out within Scheidt & Bachmann company, which is an international company founded on 1872 in Germany.
+   Scheidt & Bachmann Maghreb based in Tunisia is a special team part of the Scheidt & Bachmann division of Parking Solutions.
+   It provides and follows the full range of Parking Management Systems for the Middle East, African and Mediterranean Countries.
+       
 The number of vehicles is increasing significantly and the number of parking spaces in public places and huge buildings for instance: airports, malls, stadiums, etc … are limited. These factors are causing traffic congestion which becomes an alarming and growing problem. Needless to say, the parking problem has been a major factor since one million barrels of oil were burned every day according to © Happiest Minds Technologies. 
 
 Many people in cities around the world, consider the parking experience often as a frustrating activity and causes a lot of traffic jams as well as time-wasting.
