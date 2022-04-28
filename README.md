@@ -90,7 +90,8 @@ To get a local copy up and running follow these steps.
 ### Prerequisites
 
 Things you need to install before getting started :
-*Java JDK on Ubuntu 20.04
+
+* Java JDK on Ubuntu 20.04
 ```sh
   $ sudo apt install openjdk-11-jdk
   ``` 
