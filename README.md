@@ -62,7 +62,14 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+The main objective of the project is to develop a fully automated parking solution that benefits both the driver and service providers:
+For the customer, the goal is to enhance the parking experience, reduce time spent at the entry gate ensuring a fast and comfortable process.
+As for companies, it will decrease management costs, increase the performance of their services and their brand image and lastly decrease air pollution.
+    
+The driver will be able to pass without stopping in front of the unit to get the entry ticket. The solution will not be using Wi-Fi or cellular data. However, it will be implemented using Bluetooth Low Energy to spot the existence and the location of the driver and decide which barrier gate to open.
+The driver has only to download a mobile application to access the parking.
+
+
 
 Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
