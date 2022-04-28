@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
     private BluetoothAdapter mBluetoothAdapter;
     private BeaconManager beaconManager;
 
+    private Context context;
+    private LocationManager locationManager ;
+
+
     private Map<String, BeaconModel> beaconModelMap;
     private CustomBeaconAdapter mAdapter;
 
@@ -73,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         initUI();
 
         checkBluetoothStatus();
+        CheckGpsStatus();
+
         startTransmit();
 
         btnTicket = findViewById(R.id.CreateTicket);
@@ -195,6 +202,14 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         }, 1000);
     }
 
+    private void CheckGpsStatus() {
+        locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
+        locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        startActivity(intent1);
+    }
+
     private void checkLocationPermission() {
         String permission = Manifest.permission.ACCESS_FINE_LOCATION;
         int rc = ActivityCompat.checkSelfPermission(this, permission);
@@ -233,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
                         startActivityForResult(intent, 1001);
                     }
@@ -291,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
                                             " decoded ID : " + decode(getID(url))+
                                             " Lane : " + extractlane(url) +
                                             " extracted PAN : " + extractpan(url) +
-                                            " decoded PAN : " + decode(extractpan(url)) +
+                                            " decoded PAN : " + decodePAN(extractpan(url)) +
                                             " Time : " + extracttime(url) +
                                             " decoded Time : " + decode(extracttime(url))
                                     );
@@ -323,7 +339,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
                                             " decoded ID : " + decode(getID(url))+
                                             " Lane : " + extractlane(url)+
                                             " extracted PAN : " + extractpan(url)+
-                                            " decoded PAN : " + decode(extractpan(url))+
+                                            " decoded PAN : " + decodePAN(extractpan(url))+
                                             " extracted Time : " + extracttime(url)+
                                             " decoded Time : " + decode(extracttime(url))
                                     );
@@ -354,6 +370,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         }
     }
 
+
+
     // For Scanning
     public String getID(String input){
         return input.substring(7,9) ;
@@ -371,6 +389,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         String order = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
         int base = order.length();
         long num = 0, r;
+
         while (input.length()>0) {
             r = order.indexOf(input.charAt(0));
             input = input.substring(1);
@@ -378,6 +397,29 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
             num = num + r;
         }
         return num;
+    }
+    public String decodePAN(String input){
+        String order = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+        int base = order.length();
+        long num1 = 0, num2 = 0, r1 , r2;
+
+        String str1=input.substring(0,5);
+        String str2=input.substring(5,10);
+
+        while (str1.length()>0) {
+            r1 = order.indexOf(input.charAt(0));
+            str1 = str1.substring(1);
+            num1 = num1 * base;
+            num1 = num1 + r1;
+        }
+        while (str2.length()>0) {
+            r2 = order.indexOf(input.charAt(0));
+            str2 = str2.substring(1);
+            num2 = num2 * base;
+            num2 = num2 + r2;
+        }
+
+        return String.valueOf(num1) + String.valueOf(num2);
     }
 
 }
