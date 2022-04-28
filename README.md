@@ -19,7 +19,6 @@
    Scheidt & Bachmann Maghreb based in Tunisia is a special team part of the Scheidt & Bachmann division of Parking Solutions.
    It provides and follows the full range of Parking Management Systems for the Middle East, African and Mediterranean Countries.
    
-    <br />
     <a href="https://github.com/github_username/repo_name">View Demo</a>
    
   </p>
