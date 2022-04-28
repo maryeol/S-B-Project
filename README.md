@@ -126,14 +126,14 @@ Additional screenshots soon.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [ ] Emitting Eddystone URL Beacon
-    - [ ] Emit a unique ID
-- [ ] Scanning BLE Devices 
-- [ ] Scanning Beacons
-    - [ ] Filtering Eddystone URL Beacon
-    - [ ] Decoding URL
-- [ ] Ticket Generation
-    - [ ] Saving QR CODE 
+- [x] Emitting Eddystone URL Beacon
+    - [x] Emit a unique ID
+- [x] Scanning BLE Devices 
+- [x] Scanning Beacons
+    - [x] Filtering Eddystone URL Beacon
+    - [x] Decoding URL
+- [x] Ticket Generation
+    - [x] Saving QR CODE 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
