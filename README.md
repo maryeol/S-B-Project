@@ -104,13 +104,13 @@ Things you need to install before getting started :
 
 ### Installation
 
-Clone the repo
+* Clone the repo
    ```sh
    git clone https://github.com/maryeol/S-B-Project.git
    ```
-Launch Android Studio and import the cloned project
-Connect your device via USB or create an AVD to use the Android Emulator
-Click Run 
+* Launch Android Studio and import the cloned project
+* Connect your device via USB or create an AVD to use the Android Emulator
+* Click Run 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
