@@ -180,9 +180,8 @@ Project Link: [https://github.com/maryeol/S-B-Project](https://github.com/maryeo
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+* [Thank you S&B Company for this opportunity](https://www.scheidt-bachmann.de/en/parking-solutions/)
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
