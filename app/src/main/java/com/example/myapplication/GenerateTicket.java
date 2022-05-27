@@ -6,7 +6,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -19,14 +18,11 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -38,9 +34,8 @@ public class GenerateTicket extends AppCompatActivity {
 
     private ImageView qrCodeIV;
     private Button save;
-    private String savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+ "/QRCodeParking/";
+    private String savePath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + "/QRCode";
     private TextView id,pan,lane,time;
-    private String date;
 
     Bitmap bitmap;
     QRGEncoder qrgEncoder;
@@ -58,11 +53,12 @@ public class GenerateTicket extends AppCompatActivity {
         lane = findViewById(R.id.laneEdt);
         time = findViewById(R.id.dateEdt);
 
+        //Get intent from MainActivity
         Intent intent = getIntent();
         String URL = intent.getStringExtra("url");
 
         String sID = String.valueOf(decode(getID(URL)));
-        String sPan= String.valueOf(decode(extractpan(URL)));
+        String sPan= decodePAN(extractpan(URL));
         String sLane = String.valueOf(extractlane(URL));
         String sTime =  String.valueOf(decode(extracttime(URL)));
         String newStringTime = sTime.substring(0, 2)
@@ -76,7 +72,6 @@ public class GenerateTicket extends AppCompatActivity {
         pan.setText("Parking PAN : " + sPan);
         lane.setText("Entry number : " + sLane);
         time.setText("Entry In : "+ sFullDate);
-
 
         //Generation Of Ticker
         Log.d(TAG, URL);
@@ -104,7 +99,7 @@ public class GenerateTicket extends AppCompatActivity {
 
         // setting this dimensions inside our qr code
         // encoder to generate our qr code.
-        qrgEncoder = new QRGEncoder(URL, null, QRGContents.Type.TEXT, dimen);
+        qrgEncoder = new QRGEncoder(savePath, null, QRGContents.Type.TEXT, dimen);
 
         // getting our qrcode in the form of bitmap.
         bitmap = qrgEncoder.getBitmap();
@@ -137,6 +132,9 @@ public class GenerateTicket extends AppCompatActivity {
         //Log.d(TAG, "Save Of Ticket Success");
     }
 
+    //Methods to
+    //extract data from url to display
+    //on TextView
     public String getID(String input){
         return input.substring(7,9) ;
     }
@@ -160,5 +158,28 @@ public class GenerateTicket extends AppCompatActivity {
             num = num + r;
         }
         return num;
+    }
+    public String decodePAN(String input){
+        String order = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-";
+        int base = order.length();
+        long num1 = 0, num2 = 0, r1 , r2;
+
+        String str1=input.substring(0,5);
+        String str2=input.substring(5,10);
+
+        while (str1.length()>0) {
+            r1 = order.indexOf(input.charAt(0));
+            str1 = str1.substring(1);
+            num1 = num1 * base;
+            num1 = num1 + r1;
+        }
+        while (str2.length()>0) {
+            r2 = order.indexOf(input.charAt(0));
+            str2 = str2.substring(1);
+            num2 = num2 * base;
+            num2 = num2 + r2;
+        }
+
+        return String.valueOf(num1) + String.valueOf(num2);
     }
 }

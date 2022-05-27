@@ -13,6 +13,7 @@ public class CustomBeaconAdapter extends BaseAdapter {
     List<BeaconModel> list;
     Context context;
 
+    //Constructor
     public CustomBeaconAdapter(Context context, List<BeaconModel> list) {
         this.context = context;
         this.list = list;
@@ -38,19 +39,18 @@ public class CustomBeaconAdapter extends BaseAdapter {
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.item_beacon, null);
 
-
-        //I will display the :  mac / url/ Rssi
-        // now we will display  mac -- > tv_name
-        //                      url -- > tv_url
-        //                      rssi -- > tv_rssi
+        //Display the three attributes : @Mac_BLE / RSSI / Url
+        // mac -- > tv_name
+        // rssi -- > tv_rssi
+        // url -- > tv_url
 
         TextView tvName =view.findViewById(R.id.tv_name);
-        TextView tvUrl = view.findViewById(R.id.tv_url);
         TextView tvRssi = view.findViewById(R.id.tv_rssi);
+        TextView tvUrl = view.findViewById(R.id.tv_url);
 
         tvName.setText(list.get(position).getBleAddress());
-        tvUrl.setText(list.get(position).getUrl());
         tvRssi.setText(String.valueOf(list.get(position).getRssi()));
+        tvUrl.setText(list.get(position).getUrl());
 
         return view;
     }

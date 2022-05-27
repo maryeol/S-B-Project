@@ -1,8 +1,5 @@
 package com.example.myapplication;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class BeaconModel {
     private String bleAddress;
     private String Url;
@@ -11,6 +8,7 @@ public class BeaconModel {
     //Constructor
     public BeaconModel(){}
 
+    //Getters and Setters
     public String getBleAddress() {
         return bleAddress;
     }

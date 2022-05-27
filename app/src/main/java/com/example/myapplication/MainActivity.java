@@ -45,7 +45,6 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity implements BeaconConsumer {
 
     private static final String TAG = "Main Activity";
-
     private BluetoothAdapter mBluetoothAdapter;
     private BeaconManager beaconManager;
 
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
     private Context context;
     private LocationManager locationManager ;
 
-
+    // For Display
     private Map<String, BeaconModel> beaconModelMap;
     private CustomBeaconAdapter mAdapter;
 
@@ -63,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
     // for transmission
     private List<BeaconTransmitter> beaconList = new ArrayList<>();
 
-    // for ticker generation
+    // for ticket generation
     private Button btnTicket;
 
     String s = generateURL();  //e.g : s= "http://3021"
@@ -74,14 +73,16 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Check if phone support bluetooth
         initVariable();
+        //Initiate the adapter
         initUI();
-
+        //Enable Bluetooth and GPS Location
         checkBluetoothStatus();
         CheckGpsStatus();
-
+        //Start transmit beacon eddystone URL
         startTransmit();
-
+        //Button to generate ticket
         btnTicket = findViewById(R.id.CreateTicket);
         btnTicket.setOnClickListener(new View.OnClickListener() {
 
@@ -89,10 +90,8 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
             public void onClick(View view) {
                 try{
                     int i = 0;
-
                     System.out.println(decode(getID(mBeacons.get(i).getUrl())));
                     System.out.println(s.substring(7,11));
-
                     String x = String.valueOf(decode(getID(mBeacons.get(i).getUrl())));
                     String y =s.substring(7,11);
                     while (!x.equals(y)){
@@ -107,21 +106,125 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
                     Context context = getApplicationContext();
                     CharSequence text = "Cannot Generate Ticket!";
                     int duration = Toast.LENGTH_LONG;
-
                     Toast toast = Toast.makeText(context, text, duration);
                     toast.show();
-
                 }
             }
         });
+    }
 
+    private void initVariable() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        }
+        if (mBluetoothAdapter == null) {
+            Toast.makeText(this, "Device does not support Bluetooth", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        mBeacons = new ArrayList<>();
+        beaconModelMap = new HashMap<>();
+
+        // for the recycle view
+        mAdapter = new CustomBeaconAdapter(this, mBeacons);
+    }
+    private void initUI() {
+        ListView beaconList = (ListView) findViewById(R.id.beacon_list);
+        beaconList.setAdapter(mAdapter);
+    }
+
+    private void checkBluetoothStatus() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!mBluetoothAdapter.isEnabled()) {
+                    Toast.makeText(MainActivity.this, "Turning bluetooth...", Toast.LENGTH_SHORT).show();
+                    mBluetoothAdapter.enable();
+                    Toast.makeText(MainActivity.this, "Bluetooth On", Toast.LENGTH_SHORT).show();
+                }
+                checkLocationPermission();
+            }
+        }, 1000);
+    }
+    private void CheckGpsStatus() {
+        locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            Log.d(TAG, "GPS is enabeled already!");
+        }
+        else{
+            Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent1);
+        }
+
+    }
+    private void checkLocationPermission() {
+        String permission = Manifest.permission.ACCESS_FINE_LOCATION;
+        int rc = ActivityCompat.checkSelfPermission(this, permission);
+        if (rc == PackageManager.PERMISSION_GRANTED) {
+            onPermissionGranted();
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, 1000);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        int numOfRequest = grantResults.length;
+        boolean isGranted = numOfRequest == 1 && PackageManager.PERMISSION_GRANTED == grantResults[numOfRequest - 1];
+        String permission;
+        if (requestCode == 1000) {
+            permission = Manifest.permission.ACCESS_FINE_LOCATION;
+            if (isGranted) {
+                onPermissionGranted();
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
+                    checkLocationPermission();
+                } else {
+                    showOpenPermissionSetting();
+                }
+            }
+        }
+    }
+    void showOpenPermissionSetting() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.app_name)
+                .setMessage("Location Permission Required")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
+                        startActivityForResult(intent, 1001);
+                    }
+                })
+                .show();
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1001) {
+            checkLocationPermission();
+        }
+    }
+    private void onPermissionGranted() {
+        beaconManager = BeaconManager.getInstanceForApplication(this);
+        beaconManager.getBeaconParsers().clear();
+
+        // Detect the main identifier (URL) frame:
+        beaconManager.getBeaconParsers().add(new BeaconParser().
+                setBeaconLayout(BeaconParser.EDDYSTONE_URL_LAYOUT));
+
+        beaconManager.bind(this);
     }
 
     private void startTransmit() {
         beaconList.clear();
         generateBeaconURL(s);
     }
-
+    //Generate Unique ID
+    //To transmit it as URL.
     private String generateURL() {
         int max = 4095;
         int min = 1000;
@@ -131,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         Log.d(TAG , generatedString);
         return generatedString;
     }
-
+    //Emit Eddystone Beacon URL
     private void generateBeaconURL(String URL){
         try {
             byte[] urlBytes = UrlBeaconUrlCompressor.compress(URL);
@@ -168,119 +271,7 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
             beaconList.get(i).stopAdvertising();
     }
 
-    private void initVariable() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
-            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        }
-        if (mBluetoothAdapter == null) {
-            Toast.makeText(this, "Device does not support Bluetooth", Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
-        mBeacons = new ArrayList<>();
-        beaconModelMap = new HashMap<>();
-
-        // for the recycle view
-        mAdapter = new CustomBeaconAdapter(this, mBeacons);
-    }
-
-    private void initUI() {
-        ListView beaconList = (ListView) findViewById(R.id.beacon_list);
-        beaconList.setAdapter(mAdapter);
-    }
-
-    private void checkBluetoothStatus() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (!mBluetoothAdapter.isEnabled()) {
-                    Toast.makeText(MainActivity.this, "Turning bluetooth...", Toast.LENGTH_SHORT).show();
-                    mBluetoothAdapter.enable();
-                    Toast.makeText(MainActivity.this, "Bluetooth On", Toast.LENGTH_SHORT).show();
-                }
-                checkLocationPermission();
-            }
-        }, 1000);
-    }
-
-    private void CheckGpsStatus() {
-        locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
-        assert locationManager != null;
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-            Log.d(TAG, "GPS is enabeled already!");
-        }
-        else{
-            Intent intent1 = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            startActivity(intent1);
-        }
-
-    }
-
-    private void checkLocationPermission() {
-        String permission = Manifest.permission.ACCESS_FINE_LOCATION;
-        int rc = ActivityCompat.checkSelfPermission(this, permission);
-        if (rc == PackageManager.PERMISSION_GRANTED) {
-            onPermissionGranted();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{permission}, 1000);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        int numOfRequest = grantResults.length;
-        boolean isGranted = numOfRequest == 1 && PackageManager.PERMISSION_GRANTED == grantResults[numOfRequest - 1];
-        String permission;
-        if (requestCode == 1000) {
-            permission = Manifest.permission.ACCESS_FINE_LOCATION;
-            if (isGranted) {
-                onPermissionGranted();
-            } else {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)) {
-                    checkLocationPermission();
-                } else {
-                    showOpenPermissionSetting();
-                }
-            }
-        }
-    }
-
-    void showOpenPermissionSetting() {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.app_name)
-                .setMessage("Location Permission Required")
-                .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + getPackageName()));
-                        startActivityForResult(intent, 1001);
-                    }
-                })
-                .show();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1001) {
-            checkLocationPermission();
-        }
-    }
-
-    private void onPermissionGranted() {
-        beaconManager = BeaconManager.getInstanceForApplication(this);
-        beaconManager.getBeaconParsers().clear();
-
-        // Detect the main identifier (URL) frame:
-        beaconManager.getBeaconParsers().add(new BeaconParser().
-                setBeaconLayout(BeaconParser.EDDYSTONE_URL_LAYOUT));
-
-        beaconManager.bind(this);
-    }
-
+    //Scan Eddystone Beacon URL
     @Override
     public void onBeaconServiceConnect() {
         beaconManager.removeAllRangeNotifiers();
@@ -376,9 +367,6 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
         }
     }
 
-
-
-    // For Scanning
     public String getID(String input){
         return input.substring(7,9) ;
     }
@@ -424,7 +412,6 @@ public class MainActivity extends AppCompatActivity implements BeaconConsumer {
             num2 = num2 * base;
             num2 = num2 + r2;
         }
-
         return String.valueOf(num1) + String.valueOf(num2);
     }
 
